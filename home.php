@@ -20,10 +20,14 @@
 	<script src="common/js/lib/font-awesome.js"></script>
 
 	<!-- JS -->
-	<script src="common/js/common.js"></script>
+	<!-- <script src="common/js/common.js"></script>
 	<script src="js/search.js"></script>
 	<script src="js/pagination.js"></script>
-	<script src="js/home.js"></script>
+	<script src="js/home.js"></script> -->
+	<script src="common/js/common.min.js"></script>
+	<script src="js/search.min.js"></script>
+	<script src="js/pagination.min.js"></script>
+	<script src="js/home.min.js"></script>
 </head>
 <body>
 	<!-- MAIN WRAPPER -->
