@@ -26,9 +26,8 @@ var addBookmarkDOM = function(id, name, url, pageId) {
 // GET BOOKMARK FROM DB
 
 var displayBookmarks = function(keepSamePage, bookmarkArray) {
-  var entriesByPage = 4;
   var numberBookmarks = bookmarkArray.length;
-  var numberPages = Math.ceil(numberBookmarks / entriesByPage);
+  var numberPages = Math.ceil(numberBookmarks / ENTRIES_BY_PAGE);
   var prevCurrentId = $('.pageLink.active').data('id');
   // console.log(numberPages);
 
@@ -47,8 +46,10 @@ var displayBookmarks = function(keepSamePage, bookmarkArray) {
   // Add bookmarks to the pages
   var i = 0;
   var pageId = 0;
-  $.each(bookmarkArray.reverse(), function(index, bookmark) {
-    if (i % entriesByPage == 0 && i != 0) pageId++;
+  var bookmarkArrayReverse = bookmarkArray.slice(0);
+
+  $.each(bookmarkArrayReverse.reverse(), function(index, bookmark) {
+    if (i % ENTRIES_BY_PAGE == 0 && i != 0) pageId++;
     addBookmarkDOM(bookmark.id, bookmark.name, bookmark.url, pageId);
     i++;
   });
@@ -69,8 +70,7 @@ var getBookmarks = function(keepSamePage) {
 		bookmarkArray = JSON.parse(data);
 		// console.log(data);
 		// console.log(bookmarkArray);
-
-    displayBookmarks(keepSamePage, bookmarkArray);
+    	displayBookmarks(keepSamePage, bookmarkArray);
 	});
 }
 

@@ -5,8 +5,12 @@ var AJAX_POST_PATH = 'common/scripts/ajax_post_db.php';
 var AJAX_GET_PATH = 'common/scripts/ajax_get_bookmarks.php';
 
 var bookmarkArray = [];
+var ENTRIES_BY_PAGE = 6;
 
+
+// ****************************
 // TEMPLATE
+
 var $bookmarkEntryTemplate = $('<li>')
 								.addClass('bookmark-entry')
 								.append(
@@ -58,18 +62,6 @@ var $bookmarkEntryTemplate = $('<li>')
 					                    .addClass('error')
 					                    .text('This is an error')
 								);
-
-
-// ****************************
-// SIZE OBJECT
-
-// Object.size = function(obj) {
-//   var size = 0, key;
-//   for (key in obj) {
-//     if (obj.hasOwnProperty(key)) size++;
-//   }
-//   return size;
-// };
 
 
 // ****************************
