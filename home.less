@@ -33,10 +33,10 @@ header {
 }
 
 #add-bookmark-wrapper {
-	border: 1px dashed @mainColor;
-	padding: .5em;
+	// border: 1px dashed @mainColor;
+	// .border-radius(3px);
+	// padding: .5em;
 	margin-top: 1em;
-	.border-radius(3px);
 
 	.content {
 		display: flex;
@@ -87,7 +87,7 @@ header {
 		display: none;
 	}
 
-	li {
+	.bookmark-entry {
 		padding: .5em;
 		// .transition();
 
@@ -129,14 +129,21 @@ header {
 
 		.tools-wrapper {
 			margin-left: auto;
+			display: flex;
+			align-items: center;
 
-			i {
+			li {
 				margin-right: .3em;
 				cursor: pointer;
 
 				&:last-child {
 					margin-right: 0;
 				}
+			}
+
+			a {
+				position: relative;
+				top: 2px;
 			}
 
 			.save-bookmark {
