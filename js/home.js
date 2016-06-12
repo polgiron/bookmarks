@@ -1,81 +1,3 @@
-var AJAX_POST_PATH = 'common/scripts/ajax_post_db.php';
-var AJAX_GET_PATH = 'common/scripts/ajax_get_bookmarks.php';
-
-// TEMPLATE
-var $bookmarkEntryTemplate = $('<li>')
-								.addClass('bookmark-entry')
-								.append(
-									$('<div>')
-                    .addClass('content')
-                    .append(
-                      $('<input>')
-                        .addClass('name')
-                        .attr('type', 'text')
-                        .attr('disabled', true),
-                      $('<input>')
-                        .addClass('url')
-                        .attr('type', 'url')
-                        .attr('disabled', true),
-                      $('<ul>')
-                        .addClass('tools-wrapper')
-                        .append(
-                          $('<li>')
-                            .addClass('save-bookmark')
-                            .append(
-                              $('<i>')
-                                .addClass('fa fa-fw fa-save') 
-                            ),
-                          $('<li>')
-                            .addClass('edit-bookmark')
-                            .append(
-                              $('<i>')
-                                .addClass('fa fa-fw fa-pencil') 
-                            ),
-                          $('<li>')
-                            .addClass('delete-bookmark')
-                            .append(
-                              $('<i>')
-                                .addClass('fa fa-fw fa-trash') 
-                            ),
-                          $('<li>')
-                            .append(
-                              $('<a>')
-                                .addClass('open-bookmark')
-                                .attr('target', '_blank')
-                                .append(
-                                  $('<i>')
-                                    .addClass('fa fa-fw fa-external-link')
-                                )
-                            )
-                        )
-                    ),
-                  $('<div>')
-                    .addClass('error')
-                    .text('This is an error')
-								);
-
-
-// ****************************
-// SIZE OBJECT
-
-// Object.size = function(obj) {
-//   var size = 0, key;
-//   for (key in obj) {
-//     if (obj.hasOwnProperty(key)) size++;
-//   }
-//   return size;
-// };
-
-
-// ****************************
-// VALIDATE URL
-
-var validateURL = function(textval) {
-  var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
-  return urlregex.test(textval);
-}
-
-
 // ****************************
 // ADD BOOKMARK DOM
 
@@ -103,45 +25,7 @@ var addBookmarkDOM = function(id, name, url, pageId) {
 // ****************************
 // GET BOOKMARK FROM DB
 
-var bookmarkArray = [];
-
-var addPage = function(id){
-  // Page
-  var $page = $('<ul>')
-                    .attr('data-id', id)
-                    .addClass('page');
-
-  $page.appendTo('#bookmarks-list');
-
-  // Pagination
-  var $pagination = $('<li>')
-                        .attr('data-id', id)
-                        .addClass('pageLink')
-                        .text(id + 1);
-
-  $pagination.appendTo('#paginationList');
-}
-
-var showPage = function(id){
-  // Display this page
-  $('.page').hide();
-  $('.page[data-id=' + id + ']').show();
-
-  // Pagination
-  $('.pageLink').removeClass('active');
-  $('.pageLink[data-id=' + id + ']').addClass('active');
-
-  // Display prev or next?
-  $('#next, #prev').show();
-  if($('.pageLink').first().data('id') == id){
-    $('#prev').hide();
-  }
-  if($('.pageLink').last().data('id') == id){
-    $('#next').hide();
-  }
-}
-
-var displayBookmarks = function(keepSamePage){
+var displayBookmarks = function(keepSamePage, bookmarkArray) {
   var entriesByPage = 4;
   var numberBookmarks = bookmarkArray.length;
   var numberPages = Math.ceil(numberBookmarks / entriesByPage);
@@ -158,20 +42,20 @@ var displayBookmarks = function(keepSamePage){
   }
 
   // Add one page if empty
-  if(numberPages == 0) addPage(0);
+  if (numberPages == 0) addPage(0);
 
   // Add bookmarks to the pages
   var i = 0;
   var pageId = 0;
   $.each(bookmarkArray.reverse(), function(index, bookmark) {
-    if(i % entriesByPage == 0 && i != 0) pageId++;
+    if (i % entriesByPage == 0 && i != 0) pageId++;
     addBookmarkDOM(bookmark.id, bookmark.name, bookmark.url, pageId);
     i++;
   });
 
   // We display last active page if needed
-  if(keepSamePage){
-    if($('.pageLink').last().data('id') < prevCurrentId) prevCurrentId = $('.pageLink').last().data('id');
+  if (keepSamePage) {
+    if ($('.pageLink').last().data('id') < prevCurrentId) prevCurrentId = $('.pageLink').last().data('id');
     showPage(prevCurrentId);
   }
   else{
@@ -180,33 +64,15 @@ var displayBookmarks = function(keepSamePage){
   }
 }
 
-var getBookmarks = function(keepSamePage){
+var getBookmarks = function(keepSamePage) {
 	$.get(AJAX_GET_PATH, function(data) {
 		bookmarkArray = JSON.parse(data);
 		// console.log(data);
-		console.log(bookmarkArray);
+		// console.log(bookmarkArray);
 
-    displayBookmarks(keepSamePage);
+    displayBookmarks(keepSamePage, bookmarkArray);
 	});
 }
-
-// Click on a pagination link
-$(document).on('click', '.pageLink', function(event) {
-  var id = $(this).data('id');
-  showPage(id);
-});
-
-// Click on prev
-$(document).on('click', '#prev', function(event) {
-  var id = $('.pageLink.active').data('id');
-  showPage(id - 1);
-});
-
-// Click on next
-$(document).on('click', '#next', function(event) {
-  var id = $('.pageLink.active').data('id');
-  showPage(id + 1);
-});
 
 
 // ****************************
@@ -216,15 +82,15 @@ var isInt = function(value) {
 	return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
 }
 
-var addBookmarkDB = function(name, url){
+var addBookmarkDB = function(name, url) {
 	console.log(name, url);
 	$.post(AJAX_POST_PATH, {
 			ajaxType: 1,
 			name: name,
 			url: url
 		}
-	).done(function(data){
-		if(isInt(data)){
+	).done(function(data) {
+		if (isInt(data)) {
 			console.log('Bookmark added successfully');
 			// console.log(data);
 
@@ -256,7 +122,7 @@ $(document).on('click', '#add-bookmark', function(event) {
   var $error = $addBookmarkWrapper.find('.error');
 
   // Check URL
-  if(!validateURL(url)){
+  if (!validateURL(url)) {
     $error.text('Please enter a valid URL (http://www.example.com)');
     $error.show();
     $addBookmarkWrapper.find('.url').focus();
@@ -273,13 +139,13 @@ $(document).on('click', '#add-bookmark', function(event) {
 // ****************************
 // DELETE BOOKMARK
 
-var deleteBookmark = function(id, $bookmarkEntry){
+var deleteBookmark = function(id, $bookmarkEntry) {
   $.post(AJAX_POST_PATH, {
       ajaxType: 2,
       id: id,
     }
-  ).done(function(data){
-    if(data == 1){
+  ).done(function(data) {
+    if (data == 1) {
       console.log('Bookmark deleted successfully');
       console.log(data);
 
@@ -307,15 +173,15 @@ $(document).on('click', '.bookmark-entry .delete-bookmark', function(event) {
 // ****************************
 // EDIT BOOKMARK
 
-var editBookmark = function(id, name, url, $bookmarkEntry){
+var editBookmark = function(id, name, url, $bookmarkEntry) {
 	$.post(AJAX_POST_PATH, {
 			ajaxType: 3,
       id: id,
       name: name,
 			url: url,
 		}
-	).done(function(data){
-		if(data == 1){
+	).done(function(data) {
+		if (data == 1) {
 			console.log('Bookmark edited successfully');
 			console.log(data);
 
@@ -358,7 +224,7 @@ $(document).on('click', '.bookmark-entry .save-bookmark', function(event) {
   var $error = $bookmarkEntry.find('.error');
 
   // Check URL
-  if(!validateURL(url)){
+  if (!validateURL(url)) {
     $error.text('Please enter a valid URL (http://www.example.com)');
     $error.show();
     $bookmarkEntry.find('.url').focus();
@@ -372,11 +238,9 @@ $(document).on('click', '.bookmark-entry .save-bookmark', function(event) {
 });
 
 
-
-
-
-
+// ****************************
 // Document ready, load bookmarks
+
 $(document).ready(function() {
 
 	getBookmarks();

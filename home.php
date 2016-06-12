@@ -15,16 +15,17 @@
 	<link rel="stylesheet" href="css/home.min.css">
 
 	<!-- LIB -->
-	<script src="//use.fontawesome.com/a5176dbf70.js"></script>
-	<script src="common/js/jquery-2.1.1.min.js"></script>
+<!-- <script src="//use.fontawesome.com/a5176dbf70.js"></script> -->
+	<script src="common/js/lib/jquery-2.1.1.min.js"></script>
+	<script src="common/js/lib/font-awesome.js"></script>
 
 	<!-- JS -->
-	<script type="text/javascript" src="common/js/common.js"></script>
-	<script type="text/javascript" src="home.js"></script>
+	<script src="common/js/common.js"></script>
+	<script src="js/search.js"></script>
+	<script src="js/pagination.js"></script>
+	<script src="js/home.js"></script>
 </head>
 <body>
-	<?php print_r($bookmarkArray); ?>
-
 	<!-- MAIN WRAPPER -->
 	<div id="main-wrapper">
 		
@@ -33,6 +34,12 @@
 			<a href="./">
 				<h1>Bookmarks</h1>
 			</a>
+			<div id="search-wrapper">
+				<input type="text" class="search-input">
+				<div>
+					<i class="fa fa-search"></i>
+				</div>
+			</div>
 		</header>
 
 		<!-- ADD NEW BOOKMARK -->
