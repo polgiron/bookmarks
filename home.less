@@ -82,16 +82,15 @@ header {
 		background: white;
 		border: 1px solid @mainColor;
 		.border-radius(3px);
-
-		&:first-child {
-			margin-right: .5em;
-		}
+		flex: 1;
+		margin-right: .5em;
 
 		@media @mobile {
 			width: 100%;
+			flex: none;
+			margin-right: 0;
 
 			&:first-child {
-				margin-right: 0;
 				margin-bottom: .5em;
 			}
 		}

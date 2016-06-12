@@ -13,7 +13,7 @@ if (isset($_POST['ajaxType'])) {
 
 		// Add a new entry
 		case 1:
-			try{
+			try {
 				$req = $bdd->prepare('INSERT INTO bookmarks(url, name) VALUES (:url, :name)');
 				$req->execute(array(
 					'url' => Stripslashes($_POST['url']),

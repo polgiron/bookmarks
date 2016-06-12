@@ -7,7 +7,7 @@ if (!isset($bdd)) {
 $bookmarkArray = [];
 
 $req = $bdd->query('SELECT id, url, name FROM bookmarks');
-while($data = $req->fetch()){
+while ($data = $req->fetch()) {
 	// $bookmarkArray[$data['id']]['url'] = $data['url'];
 	// $bookmarkArray[$data['id']]['name'] = $data['name'];
 
@@ -18,6 +18,7 @@ while($data = $req->fetch()){
 
 	$bookmarkArray[] = $entry;
 }
+
 $req->closeCursor();
 
 echo json_encode($bookmarkArray);
