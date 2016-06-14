@@ -8,9 +8,6 @@ $bookmarkArray = [];
 
 $req = $bdd->query('SELECT id, url, name FROM bookmarks');
 while ($data = $req->fetch()) {
-	// $bookmarkArray[$data['id']]['url'] = $data['url'];
-	// $bookmarkArray[$data['id']]['name'] = $data['name'];
-
 	$entry = [];
 	$entry['id'] = $data['id'];
 	$entry['name'] = $data['name'];

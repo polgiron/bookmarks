@@ -16,8 +16,8 @@ if (isset($_POST['ajaxType'])) {
 			try {
 				$req = $bdd->prepare('INSERT INTO bookmarks(url, name) VALUES (:url, :name)');
 				$req->execute(array(
-					'url' => Stripslashes($_POST['url']),
-					'name' => Stripslashes($_POST['name']),
+					'url' => htmlspecialchars($_POST['url'], ENT_QUOTES, 'UTF-8'),
+					'name' => htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8'),
 				));
 
 				// We get the id of this entry
@@ -51,8 +51,8 @@ if (isset($_POST['ajaxType'])) {
 			try {
 				$req = $bdd->prepare('UPDATE bookmarks SET url = :url, name = :name WHERE id = :id');
 				$req->execute(array(
-					'url' => Stripslashes($_POST['url']),
-					'name' => Stripslashes($_POST['name']),
+					'url' => htmlspecialchars($_POST['url'], ENT_QUOTES, 'UTF-8'),
+					'name' => htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8'),
 					'id' => $_POST['id']
 				));
 				$req->closeCursor();
